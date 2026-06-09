@@ -4,6 +4,7 @@ Im lokalen WLAN wird ein Server gestartet, der die Audio-Datei hostet und synchr
 Über zwei kleine Webseiten kann man sich im Smartphone-Browser mit dem Server verbinden.
 Entweder als "Client", ausgelöst von einer Nachricht des Servers die Audio-Datei abspielt;
 oder als "Admin", der die Start/Stop-Nachrichten auslöst, die dann an alle Clients geschickt werden. 
+Damit das funktioniert, müssen der Computer, auf dem der Server läuft und das/die Smartphone(s) im selben WLAN sein. 
 
 ### Node.js installieren
 
