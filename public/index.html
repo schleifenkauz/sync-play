@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <title>Client</title>
 </head>
+
 <body>
-  <button id="btn_connect" onclick="connect()">Connect</button>
-  <p id="status">Not connected</p>
+  <div class="container">
+
+    <button id="btn_connect" class="connect-btn" onclick="connect()">
+      Connect
+    </button>
+
+    <div id="status_div" class="status hidden">
+      <div id="status_icon" class="icon">⏳</div>
+    </div>
+
+  </div>
 
   <script src="client.js"></script>
 </body>

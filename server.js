@@ -10,6 +10,8 @@ const wss = new WebSocket.Server({ server });
 
 let clients = [];
 
+let playing = false
+
 wss.on("connection", (ws) => {
     clients.push(ws);
 
@@ -26,10 +28,16 @@ wss.on("connection", (ws) => {
             }));
         }
 
-        if (data.type === "start") {
-            const startEpoch = Date.now() + 2000
-            const msg = JSON.stringify({ type: "start", startTime: startEpoch })
-            clients.forEach(ws => ws.send(msg))
+        if (data.type === "toggle") {
+            if (!playing) {            
+                const startEpoch = Date.now() + 2000
+                const msg = JSON.stringify({ type: "start", startTime: startEpoch })
+                clients.forEach(ws => ws.send(msg))
+            } else {
+                const msg = JSON.stringify({type: "pause"})
+                clients.forEach(ws => ws.send(msg))
+            }
+            playing = !playing;
         }
     });
 });

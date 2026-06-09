@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <title>Admin</title>
 </head>
+
 <body>
-  <button id = "btn_connect" onclick="connect()">Connect</button>
-  <button id="btn_start" style="visibility: collapse;" onclick="startAudio()">Start</button>
-  <p id="status">Not connected</p> 
+  <div class="container">
+
+    <button id="btn_connect" class="connect-btn" onclick="connect()">
+      Connect
+    </button>
+
+    <button id="status_div" class="status hidden" onclick="toggleAudio()">
+      <div id="status_icon" class="icon">⏳</div>
+    </div>
+
+  </div>
 
   <script src="admin.js"></script>
 </body>

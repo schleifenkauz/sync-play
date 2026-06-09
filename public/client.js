@@ -1,16 +1,14 @@
 let ws;
 let audioCtx;
 let buffer;
+let source;
 
 let latency = 0;
 
-function setStatus(message) {
-    document.getElementById("status").innerHTML = message
-}
+const btn = document.getElementById("btn_connect");
+const status_div = document.getElementById("status_div")
+const status = document.getElementById("status_icon");
 
-function disable(btnId) {
-    document.getElementById(btnId).disable = false
-}
 
 // AUDIO LADEN
 async function loadAudio() {
@@ -37,13 +35,12 @@ function handlePong(msg) {
     latency = estimatedServer - t1;
 }
 
-// AUDIO START
 function playAt(serverTime) {
     const offset = serverTime - Date.now() - latency;
     console.log("Offset: ", offset);
     const startTime = (audioCtx.currentTime + offset) / 1000;
 
-    const source = audioCtx.createBufferSource();
+    source = audioCtx.createBufferSource();
     source.buffer = buffer;
     source.connect(audioCtx.destination);
 
@@ -51,17 +48,18 @@ function playAt(serverTime) {
     source.start(startTime);
 }
 
-// CONNECT
 async function connect() {
+    btn.style.display = "none"
+    status_div.classList.remove("hidden");
+    
     await loadAudio();
-    disable("btn_connect")
-
+    
     ws = new WebSocket(`ws://${location.host}`);
-
+    
     ws.onopen = () => {
         console.log("Connected!")
-        setInterval(ping, 1000); 
-        setStatus("Connected!")
+        setInterval(ping, 1000);
+        status.innerHTML = "⏸"
     };
 
     ws.onmessage = (msg) => {
@@ -73,8 +71,14 @@ async function connect() {
 
         if (data.type === "start") {
             console.log("START:", data.startTime);
-            setStatus("Playing")
+            status.innerHTML = "▶"
             playAt(data.startTime);
+        }
+        if (data.type === "pause") {
+            console.log("PAUSE!")
+            status.innerHTML = "⏸"
+            source.stop();
+            source.disconnect();
         }
     };
 }
