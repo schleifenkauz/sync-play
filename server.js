@@ -1,5 +1,6 @@
 const express = require("express");
 const http = require("http");
+const os = require("os")
 const WebSocket = require("ws");
 
 const app = express();
@@ -42,6 +43,26 @@ wss.on("connection", (ws) => {
     });
 });
 
-server.listen(8080, () => {
-    console.log("Server läuft auf http://localhost:8080");
+function getLocalIP() {
+  const nets = os.networkInterfaces();
+
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+
+      if (
+        net.family === "IPv4" &&
+        !net.internal &&
+        !name.includes("Virtual") &&
+        !name.includes("Docker")
+      ) {
+        return net.address;
+      }
+    }
+  }
+}
+
+server.listen(8080, "0.0.0.0", () => {
+    const ip = getLocalIP();
+    const url = `http://${ip}:8080`;
+    console.log("Client Adresse: ", url);
 });
