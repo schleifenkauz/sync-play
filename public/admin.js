@@ -5,8 +5,9 @@ const status_div = document.getElementById("status_div")
 const toggle = document.getElementById("status_icon")
 
 async function connect() {
-    ws = new WebSocket(`ws://${location.host}`);
-
+    const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+    ws = new WebSocket(`${protocol}://${location.host}`);
+    
     ws.onopen = () => {
         console.log("Connected!")
         btn.style.display = "none"

@@ -53,8 +53,9 @@ async function connect() {
     status_div.classList.remove("hidden");
     
     await loadAudio();
-    
-    ws = new WebSocket(`ws://${location.host}`);
+
+    const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+    ws = new WebSocket(`${protocol}://${location.host}`);
     
     ws.onopen = () => {
         console.log("Connected!")

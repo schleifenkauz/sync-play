@@ -61,8 +61,9 @@ function getLocalIP() {
   }
 }
 
-server.listen(8080, "0.0.0.0", () => {
+const port = process.env.PORT || 8080;
+server.listen(port, "0.0.0.0", () => {
     const ip = getLocalIP();
-    const url = `http://${ip}:8080`;
+    const url = `http://${ip}:${port}`;
     console.log("Client Adresse: ", url);
 });
