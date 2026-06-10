@@ -55,7 +55,7 @@ async function connect() {
     await loadAudio();
 
     const protocol = location.protocol === "https:" ? "wss:" : "ws:";
-    ws = new WebSocket(`${protocol}://${location.host}`);
+    ws = new WebSocket(`${protocol}//${location.host}`);
     
     ws.onopen = () => {
         console.log("Connected!")
