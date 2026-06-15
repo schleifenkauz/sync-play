@@ -14,7 +14,7 @@ const status = document.getElementById("status_icon");
 async function loadAudio() {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    const res = await fetch("audio.flac");
+    const res = await fetch("dl-audio-file");
     const arrayBuffer = await res.arrayBuffer();
     buffer = await audioCtx.decodeAudioData(arrayBuffer);
 }

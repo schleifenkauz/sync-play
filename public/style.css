@@ -17,7 +17,7 @@ body {
 }
 
 /* CONNECT BUTTON */
-button {
+.circle-button {
   width: 180px;
   height: 180px;
   border-radius: 50%;

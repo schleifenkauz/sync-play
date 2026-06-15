@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
@@ -10,16 +11,20 @@
 <body>
   <div class="container">
 
-    <button id="btn_connect" class="connect-btn" onclick="connect()">
+    <button id="btn_connect" class="connect-btn circle-button" onclick="connect()">
       Connect
     </button>
 
-    <button id="status_div" class="status hidden" onclick="toggleAudio()">
-      <div id="status_icon" class="icon">⏳</div>
+    <div id="admin_content" class="hidden">
+      <button id="status_div" class="status circle-button" onclick="toggleAudio()">
+        <div id="status_icon" class="icon">⏳</div>
+      </button>
+      <input type="file" id="file_picker" accept="audio/*">
+      <button onclick="uploadFile()">Upload</button>
     </div>
 
-  </div>
 
-  <script src="admin.js"></script>
+    <script src="admin.js"></script>
 </body>
+
 </html>
