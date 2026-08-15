@@ -15,6 +15,7 @@ async function loadAudio() {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     const res = await fetch("dl-audio-file");
+    console.log(res);
     const arrayBuffer = await res.arrayBuffer();
     buffer = await audioCtx.decodeAudioData(arrayBuffer);
 }

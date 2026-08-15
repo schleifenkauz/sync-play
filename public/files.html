@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Files</title>
+</head>
+
+<body>
+    <div class="container">
+        <button id="status_div" class="status circle-button" onclick="toggleAudio()">
+            <div id="status_icon" class="icon">⏳</div>
+        </button>
+        <input type="file" id="file_picker" accept="audio/*">
+        <button onclick="uploadFile()">Upload</button>
+        <script src="files.js"></script>
+</body>
+
+</html>
