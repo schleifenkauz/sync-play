@@ -40,12 +40,12 @@ async function uploadFile() {
     const file = file_input.files[0];
 
     if (!file) {
-        alert("Choose an audio file first");
+        alert("Choose a file first");
         return;
     }
 
     const formData = new FormData();
-    formData.append("audio", file);
+    formData.append("file", file);
     
     file_input.files = [];
 
@@ -58,5 +58,5 @@ async function uploadFile() {
 
     console.log(result);
 
-    alert("Succesfully uploaded audio file!")
+    alert("Successfully uploaded file!")
 }

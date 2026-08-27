@@ -63,9 +63,11 @@ const r2 = new S3Client({
     }
 });
 
-app.post("/upload", upload.single("audio"), async (req, res) => {
+app.post("/upload", upload.single("file"), async (req, res) => {
 
     const file = req.file;
+
+    if (!file) return res.status(400).json({ message: 'no file' });
 
     await r2.send(
         new PutObjectCommand({
@@ -91,8 +93,8 @@ async function get_all_keys() {
     return (result_list.Contents || []).map(obj => obj.Key);
 }
 
-app.get("/available-files", (req, res) => {
-    const keys = get_all_keys();
+app.get("/available-files", async (req, res) => {
+    const keys = await get_all_keys();
     res.json(keys);
 })
 

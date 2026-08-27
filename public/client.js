@@ -1,23 +1,27 @@
 let ws;
-let audioCtx;
-let buffer;
-let source;
-
+let videoElem;
 let latency = 0;
 
 const btn = document.getElementById("btn_connect");
 const status_div = document.getElementById("status_div")
 const status = document.getElementById("status_icon");
 
+async function loadMedia() {
+    const container = document.querySelector('.container');
+    videoElem = document.createElement('video');
+    videoElem.id = 'media';
+    videoElem.controls = true;
+    videoElem.preload = 'auto';
+    videoElem.crossOrigin = 'anonymous';
+    videoElem.style.maxWidth = '100%';
+    videoElem.style.display = 'block';
+    videoElem.src = 'dl-audio-file';
+    container.appendChild(videoElem);
 
-// AUDIO LADEN
-async function loadAudio() {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    const res = await fetch("dl-audio-file");
-    console.log(res);
-    const arrayBuffer = await res.arrayBuffer();
-    buffer = await audioCtx.decodeAudioData(arrayBuffer);
+    await new Promise((resolve) => {
+        if (videoElem.readyState >= 3) return resolve();
+        videoElem.addEventListener('canplay', resolve, { once: true });
+    });
 }
 
 function ping() {
@@ -29,31 +33,35 @@ function ping() {
 
 function handlePong(msg) {
     const t1 = Date.now();
-
     const rtt = t1 - msg.clientTime;
     const estimatedServer = msg.serverTime + rtt / 2;
-
     latency = estimatedServer - t1;
 }
 
 function playAt(serverTime) {
     const offset = serverTime - Date.now() - latency;
     console.log("Offset: ", offset);
-    const startTime = (audioCtx.currentTime + offset) / 1000;
 
-    source = audioCtx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(audioCtx.destination);
+    if (!videoElem) {
+        console.warn('No media element loaded');
+        return;
+    }
 
-    console.log("Start At ", startTime, ", now: ", audioCtx.currentTime);
-    source.start(startTime);
+    // reset to start
+    try { videoElem.pause(); videoElem.currentTime = 0; } catch (e) {}
+
+    if (offset <= 0) {
+        videoElem.play().catch(e => console.warn('play failed', e));
+    } else {
+        setTimeout(() => videoElem.play().catch(e => console.warn('play failed', e)), offset);
+    }
 }
 
 async function connect() {
     btn.style.display = "none"
     status_div.classList.remove("hidden");
     
-    await loadAudio();
+    await loadMedia();
 
     const protocol = location.protocol === "https:" ? "wss:" : "ws:";
     ws = new WebSocket(`${protocol}//${location.host}`);
@@ -79,8 +87,7 @@ async function connect() {
         if (data.type === "pause") {
             console.log("PAUSE!")
             status.innerHTML = "⏸"
-            source.stop();
-            source.disconnect();
+            if (videoElem) videoElem.pause();
         }
     };
 }
